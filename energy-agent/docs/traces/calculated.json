@@ -1,0 +1,67 @@
+{
+  "run_id": "en-71970e",
+  "question": "What was the bill in August?",
+  "answer_type": "calculated",
+  "data_version": 4,
+  "llm": {
+    "provider": "mock",
+    "model": null,
+    "ready": true
+  },
+  "steps": [
+    {
+      "step": 1,
+      "node": "route",
+      "tool": null,
+      "input": "What was the bill in August?",
+      "output": {
+        "method": "keyword",
+        "intent": "bill",
+        "dates": {
+          "period": [
+            "2026-08-01",
+            "2026-08-31"
+          ],
+          "base": [
+            "2026-07-01",
+            "2026-07-31"
+          ]
+        },
+        "stop_reason": null
+      }
+    },
+    {
+      "step": 2,
+      "node": "run_tools",
+      "tool": "get_bill",
+      "input": {
+        "start": "2026-08-01",
+        "end": "2026-08-31"
+      },
+      "output": {
+        "start": "2026-08-01",
+        "end": "2026-08-31",
+        "kwh": 337933,
+        "cost": 2835394,
+        "avg_price": 8.39,
+        "days": 31,
+        "evidence_refs": [
+          "daily_energy:main:2026-08-01..2026-08-31"
+        ],
+        "assumptions": [],
+        "limitations": []
+      }
+    },
+    {
+      "step": 3,
+      "node": "write",
+      "tool": null,
+      "input": null,
+      "output": "From 2026-08-01 to 2026-08-31: 337,933 kWh costing Rs 2,835,394 (Rs 8.39/kWh)."
+    }
+  ],
+  "llm_calls": 0,
+  "tokens": 0,
+  "latency_ms": 19,
+  "checker_passed": true
+}

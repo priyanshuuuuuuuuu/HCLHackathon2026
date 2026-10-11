@@ -1,0 +1,124 @@
+{
+  "run_id": "en-36af13",
+  "question": "Is there a compressor leak at night?",
+  "answer_type": "recommendation",
+  "data_version": 4,
+  "llm": {
+    "provider": "mock",
+    "model": null,
+    "ready": true
+  },
+  "steps": [
+    {
+      "step": 1,
+      "node": "route",
+      "tool": null,
+      "input": "Is there a compressor leak at night?",
+      "output": {
+        "method": "keyword",
+        "intent": "leaks",
+        "dates": {
+          "period": [
+            "2026-07-01",
+            "2026-09-30"
+          ],
+          "base": [
+            "2026-04-01",
+            "2026-06-30"
+          ]
+        },
+        "stop_reason": null
+      }
+    },
+    {
+      "step": 2,
+      "node": "run_tools",
+      "tool": "detect_leaks",
+      "input": {
+        "start": "2026-07-01",
+        "end": "2026-09-30"
+      },
+      "output": {
+        "start": "2026-07-01",
+        "end": "2026-09-30",
+        "compared_with": [
+          "2026-04-01",
+          "2026-06-30"
+        ],
+        "items": [
+          {
+            "meter": "compressors",
+            "night_vs_day": 0.35,
+            "before": 0.05,
+            "flag": true
+          },
+          {
+            "meter": "hvac",
+            "night_vs_day": 0.64,
+            "before": 0.64,
+            "flag": false
+          },
+          {
+            "meter": "lighting",
+            "night_vs_day": 0.15,
+            "before": 0.15,
+            "flag": false
+          },
+          {
+            "meter": "furnace",
+            "night_vs_day": 0.1,
+            "before": 0.11,
+            "flag": false
+          },
+          {
+            "meter": "line_1",
+            "night_vs_day": 0.07,
+            "before": 0.06,
+            "flag": false
+          },
+          {
+            "meter": "line_2",
+            "night_vs_day": 0.06,
+            "before": 0.06,
+            "flag": false
+          },
+          {
+            "meter": "line_3",
+            "night_vs_day": 0.04,
+            "before": 0.04,
+            "flag": false
+          },
+          {
+            "meter": "line_4",
+            "night_vs_day": 0.04,
+            "before": 0.05,
+            "flag": false
+          }
+        ],
+        "flagged": [
+          "compressors"
+        ],
+        "evidence_refs": [
+          "meter_clean:*:2026-07-01..2026-09-30:night 0-5h"
+        ],
+        "assumptions": [
+          "Leak = night/day load ratio more than 1.5x the previous period and +0.1"
+        ],
+        "limitations": [
+          "Cannot tell a leak from a deliberate new night process"
+        ]
+      }
+    },
+    {
+      "step": 3,
+      "node": "write",
+      "tool": null,
+      "input": null,
+      "output": "Likely leak on compressors: night load is 35% of daytime load, up from 5% in the previous period."
+    }
+  ],
+  "llm_calls": 0,
+  "tokens": 0,
+  "latency_ms": 126,
+  "checker_passed": true
+}

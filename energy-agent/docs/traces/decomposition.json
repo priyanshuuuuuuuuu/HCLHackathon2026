@@ -1,0 +1,144 @@
+{
+  "run_id": "en-f6a065",
+  "question": "Is the old furnace the reason the bill went up?",
+  "answer_type": "decomposition",
+  "data_version": 4,
+  "llm": {
+    "provider": "mock",
+    "model": null,
+    "ready": true
+  },
+  "steps": [
+    {
+      "step": 1,
+      "node": "route",
+      "tool": null,
+      "input": "Is the old furnace the reason the bill went up?",
+      "output": {
+        "method": "keyword",
+        "intent": "decomposition",
+        "dates": {
+          "period": [
+            "2026-07-01",
+            "2026-09-30"
+          ],
+          "base": [
+            "2026-04-01",
+            "2026-06-30"
+          ]
+        },
+        "stop_reason": null
+      }
+    },
+    {
+      "step": 2,
+      "node": "run_tools",
+      "tool": "decompose_change",
+      "input": {
+        "base_start": "2026-04-01",
+        "base_end": "2026-06-30",
+        "cmp_start": "2026-07-01",
+        "cmp_end": "2026-09-30"
+      },
+      "output": {
+        "base": {
+          "start": "2026-04-01",
+          "end": "2026-06-30",
+          "bill": 7281144,
+          "kwh": 927439
+        },
+        "compare": {
+          "start": "2026-07-01",
+          "end": "2026-09-30",
+          "bill": 8317098,
+          "kwh": 992926
+        },
+        "total_change": 1035954,
+        "total_pct": 14.23,
+        "bridge": [
+          {
+            "cause": "tariff",
+            "pct_points": 7.17,
+            "range": [
+              7.17,
+              7.17
+            ],
+            "amount": 521832
+          },
+          {
+            "cause": "volume",
+            "pct_points": 2.62,
+            "range": [
+              2.49,
+              2.75
+            ],
+            "amount": 190909
+          },
+          {
+            "cause": "product_mix",
+            "pct_points": 1.8,
+            "range": [
+              0.89,
+              2.73
+            ],
+            "amount": 131150
+          },
+          {
+            "cause": "weather",
+            "pct_points": 0.55,
+            "range": [
+              -0.58,
+              1.57
+            ],
+            "amount": 39988
+          },
+          {
+            "cause": "waste",
+            "pct_points": 2.09,
+            "range": [
+              -0.25,
+              3.83
+            ],
+            "amount": 152074
+          }
+        ],
+        "adds_up": true,
+        "model": {
+          "r2": 0.911,
+          "holdout_mape": 0.06,
+          "n_days": 91,
+          "trained_on": "2026-04-01..2026-06-30",
+          "coefficients": {
+            "baseload_per_day": 3305.806,
+            "u_bolts": 0.689,
+            "u_forgings": 9.223,
+            "u_gears": 0.829,
+            "cooling_degree_days": 68.554
+          }
+        },
+        "evidence_refs": [
+          "daily_energy:main:2026-04-01..2026-09-30"
+        ],
+        "assumptions": [
+          "Energy effects valued at the base-period average price",
+          "Ranges = 5th-95th percentile of 200 bootstrap model refits"
+        ],
+        "limitations": [
+          "Attribution order tariff > volume > mix > weather > waste (Annex A); interaction effects go to the later step",
+          "Waste range includes zero: no clear waste at this level"
+        ]
+      }
+    },
+    {
+      "step": 3,
+      "node": "write",
+      "tool": null,
+      "input": null,
+      "output": "The bill changed by 14.23% (Rs 1,035,954). In percentage points: tariff 7.17, volume 2.62, product mix 1.8, weather 0.55, waste 2.09. Only waste is controllable: 2.09 points (range -0.25 to 3.83)."
+    }
+  ],
+  "llm_calls": 0,
+  "tokens": 0,
+  "latency_ms": 212,
+  "checker_passed": true
+}
